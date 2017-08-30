@@ -45,12 +45,16 @@ class MenuBuilder
 		foreach ($points as $point) {
 			if (count($this->graph_list[$point]) > 1) {
 				$menu[] = [
+					'id' => $this->getPageById($point, $this->pages)['id'],
 					'title' => $this->getPageById($point, $this->pages)[$title],
 					'items' => $this->buildMenu($this->graph_list[$point])
 				];
 			} else {
 				if ($point !== null)
-					$menu[] = ['title' => $this->getPageById($point, $this->pages)[$title]];
+					$menu[] = [
+						'id' => $this->getPageById($point, $this->pages)[$id],
+						'title' => $this->getPageById($point, $this->pages)[$title]
+					];
 			}
 		}
 		return $menu;
