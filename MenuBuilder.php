@@ -52,7 +52,7 @@ class MenuBuilder
 			} else {
 				if ($point !== null)
 					$menu[] = [
-						'id' => $this->getPageById($point, $this->pages)[$id],
+						'id' => $this->getPageById($point, $this->pages)['id'],
 						'title' => $this->getPageById($point, $this->pages)[$title]
 					];
 			}
