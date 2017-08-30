@@ -1,6 +1,6 @@
 <?php
 
-namespace menubuilder;
+namespace MenuBuilder\menubuilder;
 	
 class MenuBuilder
 {
@@ -28,10 +28,10 @@ class MenuBuilder
 		return $this->graph_list;
 	}
 	
-	public function getMenuArray()
+	public function getMenuArray($title='title')
 	{
 		if ($this->graph_list === null) $this->buildGraphAsList();
-		return $this->buildMenu($this->top_points);
+		return $this->buildMenu($this->top_points, $title);
 	}
 	
 	public function getTopPoints()
@@ -39,18 +39,18 @@ class MenuBuilder
 		return $this->top_points;
 	}
 	
-	private function buildMenu($points)
+	private function buildMenu($points, $title)
 	{
 		$menu = [];
 		foreach ($points as $point) {
 			if (count($this->graph_list[$point]) > 1) {
 				$menu[] = [
-					'title' => $this->getPageById($point, $this->pages)['title'],
+					'title' => $this->getPageById($point, $this->pages)[$title],
 					'items' => $this->buildMenu($this->graph_list[$point])
 				];
 			} else {
 				if ($point !== null)
-					$menu[] = ['title' => $this->getPageById($point, $this->pages)['title']];
+					$menu[] = ['title' => $this->getPageById($point, $this->pages)[$title]];
 			}
 		}
 		return $menu;
@@ -64,8 +64,9 @@ class MenuBuilder
 	
 	private function determinateTopPoints()
 	{
-		foreach ($this->pages as $page)
-			if ($page['parent'] === 0) $this->top_points[] = $page['id'];
+		foreach ($this->pages as $page) {
+			if ($page['parent'] == 0) $this->top_points[] = $page['id'];
+		}
 	}
 }
 	
