@@ -1,0 +1,17 @@
+{
+	"name": "MenuBuilder",
+	"description": "Build tree for site menu from db array data",
+	"keywords": ["site menu", "array to menu", "menu"],
+	"license": "BSD-3-Clause",
+	"authors": [
+		{
+			"name": "Andrew Demial",
+			"email": "demial7@icloud.com"
+		}
+	],
+	"autoload": {
+		"psr-4": {
+			"MenuBuilder\\menubuilder\\": ""
+		}
+	}
+}
