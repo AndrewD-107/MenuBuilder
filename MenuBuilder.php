@@ -47,7 +47,7 @@ class MenuBuilder
 				$menu[] = [
 					'id' => $this->getPageById($point, $this->pages)['id'],
 					'title' => $this->getPageById($point, $this->pages)[$title],
-					'items' => $this->buildMenu($this->graph_list[$point])
+					'items' => $this->buildMenu($this->graph_list[$point], $title)
 				];
 			} else {
 				if ($point !== null)
