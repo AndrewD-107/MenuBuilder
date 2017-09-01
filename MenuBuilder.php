@@ -39,9 +39,26 @@ class MenuBuilder
 		return $this->top_points;
 	}
 	
-	private function buildMenu($points, $title)
+	public function getOpenMenuPoints($id, &$points = array())
+	{
+		foreach ($this->graph_list as $parent => $point) {
+			foreach ($point as $p) {
+				if ($p === $id) {
+					$points[] = $parent;
+					$this->getOpenMenuPoints($parent, $points);
+					break;
+				}
+			}
+		}
+		$result = $points;
+		$result[] = $id;
+		return $result;
+	}
+	
+	private function buildMenu($points, $title, $open_item = false)
 	{
 		$menu = [];
+		$openPoints = $open_item ? $this->getOpenMenuPoints() : false;
 		foreach ($points as $point) {
 			if (count($this->graph_list[$point]) > 1) {
 				$menu[] = [

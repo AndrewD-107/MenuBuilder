@@ -3,8 +3,10 @@
 require_once 'MenuBuilder.php';
 	
 $pages = json_decode(file_get_contents('data.json'), true);
-$menu_builder = new MenuBuilder($pages);
+$menu_builder = new \MenuBuilder\menubuilder\MenuBuilder($pages);
 $menu = $menu_builder->getMenuArray();
+
+print_r($menu_builder->getOpenMenuPoints(14));
 
 echo display($menu);
 
