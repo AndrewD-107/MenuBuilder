@@ -28,10 +28,11 @@ class MenuBuilder
 		return $this->graph_list;
 	}
 	
-	public function getMenuArray($title='title')
+	public function getMenuArray($title='title', $id=false)
 	{
 		if ($this->graph_list === null) $this->buildGraphAsList();
-		return $this->buildMenu($this->top_points, $title);
+		$opened_items = $id ? $this->getOpenMenuPoints($id) : false;
+		return $this->buildMenu($this->top_points, $title, $opened_items);
 	}
 	
 	public function getTopPoints()
@@ -43,33 +44,38 @@ class MenuBuilder
 	{
 		foreach ($this->graph_list as $parent => $point) {
 			foreach ($point as $p) {
-				if ($p === $id) {
-					$points[] = $parent;
-					$this->getOpenMenuPoints($parent, $points);
-					break;
+				if ($p == $id) {
+					if ($parent !== 0) {
+						$points[] = (int)$parent;
+						$this->getOpenMenuPoints($parent, $points);
+					} else break;
 				}
 			}
 		}
 		$result = $points;
-		$result[] = $id;
+		$result[] = (int)$id;
 		return $result;
 	}
 	
-	private function buildMenu($points, $title, $open_item = false)
+	private function buildMenu($points, $title, $opened_items = false)
 	{
+		//print_r($opened_items);
 		$menu = [];
-		$openPoints = $open_item ? $this->getOpenMenuPoints() : false;
+		$p = [];
 		foreach ($points as $point) {
+			$id = $this->getPageById($point, $this->pages)['id'];
 			if (count($this->graph_list[$point]) > 1) {
 				$menu[] = [
-					'id' => $this->getPageById($point, $this->pages)['id'],
+					'id' => $id,
 					'title' => $this->getPageById($point, $this->pages)[$title],
-					'items' => $this->buildMenu($this->graph_list[$point], $title)
+					'opened' => $opened_items && array_search($id, $opened_items) !== false ? true : false,
+					'items' => $this->buildMenu($this->graph_list[$point], $title, $opened_items)
 				];
 			} else {
 				if ($point !== null)
 					$menu[] = [
-						'id' => $this->getPageById($point, $this->pages)['id'],
+						'id' => $id,
+						'opened' => $opened_items && array_search($id, $opened_items) !== false ? true : false,
 						'title' => $this->getPageById($point, $this->pages)[$title]
 					];
 			}
