@@ -7,10 +7,12 @@ class MenuBuilder
 	private $top_points;
 	private $pages;
 	private $graph_list;
+	private $root_id;
 	
-	public function __construct($pages)
+	public function __construct($pages, $root_id = 0)
 	{
 		$this->pages = $pages;
+		$this->root_id = $root_id;
 		$this->determinateTopPoints();
 	}
 	
@@ -18,7 +20,7 @@ class MenuBuilder
 	{
 		foreach ($this->pages as $point) {
 			$this->graph_list[$point['id']][0] = null;
-			if ($point['parent'] !== 0)
+			if ($point['parent'] !== $this->root_id)
 				$this->graph_list[$point['parent']][] = $point['id'];
 		}
 	}
@@ -45,7 +47,7 @@ class MenuBuilder
 		foreach ($this->graph_list as $parent => $point) {
 			foreach ($point as $p) {
 				if ($p == $id) {
-					if ($parent !== 0) {
+					if ($parent !== $this->root_id) {
 						$points[] = (int)$parent;
 						$this->getOpenMenuPoints($parent, $points);
 					} else break;
@@ -92,7 +94,7 @@ class MenuBuilder
 	private function determinateTopPoints()
 	{
 		foreach ($this->pages as $page) {
-			if ($page['parent'] == 0) $this->top_points[] = $page['id'];
+			if ($page['parent'] == $this->root_id) $this->top_points[] = $page['id'];
 		}
 	}
 }
