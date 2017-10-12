@@ -66,7 +66,7 @@ class MenuBuilder
 		$p = [];
 		foreach ($points as $point) {
 			$id = $this->getPageById($point, $this->pages)['id'];
-			if (count($this->graph_list[$point]) > 1) {
+			if ($point && count($this->graph_list[$point]) > 1) {
 				$menu[] = [
 					'id' => $id,
 					'title' => $this->getPageById($point, $this->pages)[$title],
